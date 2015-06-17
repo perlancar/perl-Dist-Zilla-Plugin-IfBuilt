@@ -33,20 +33,21 @@ sub munge_file {
         if ($header =~ /IFBUILT/) {
             # require that the lines are all commented
             my $common_prefix = common_prefix(split /^/, $lines) // '';
-            unless ($common_prefix =~ /^(\s*)#/) {
-                $self->log_fatal(["All lines inside # IFBUILT section needs to be commented: <%s>"], $lines);
+            unless ($common_prefix =~ /^(\s*)(#\s*)/) {
+                $self->log_fatal(["All lines inside #IFBUILT section needs to be commented: <%s>", $lines]);
             }
-            my $indent = $1;
+            my ($indent, $comment) = ($1, $2);
             # uncomment the lines
-            $lines =~ s/^\Q$common_prefix/$indent/gm;
+            $lines =~ s/^\Q$indent$comment/$indent/gm;
         } else {
-            # comment the lines with ##
-            $lines =~ s/^/## /gm;
+            # comment the lines
+            $lines =~ s/^/# /gm;
         }
         $lines;
     };
-    if ($content =~ s{^(#\s*(?:IFBUILT|IFUNBUILT)\R)(.*?^)#\s*END \1)}
-                     {$1 . $code_comment_or_uncomment->($1, $2) . $3}egm) {
+    if ($content =~ s{^(#\s*(IFBUILT|IFUNBUILT)\R)(.*?^)(#\s*END \2)}
+                     {$1 . $code_comment_or_uncomment->($1, $3) . $4}egms) {
+        $self->log_debug(["Processing #IFBUILT/#IFUNBUILT sections in %s", $file->name]);
         $file->content($content);
     }
 }
@@ -72,7 +73,7 @@ In F<lib/Foo.pm>:
  # END IFUNBUILT
 
  # IFBUILT
- # INSERT_BLOCK Function::Embeddable uniq
+ ##INSERT_BLOCK Function::Embeddable uniq
  # END IFBUILT
  # IFUNBUILT
  use List::MoreUtils 'uniq';
@@ -83,7 +84,7 @@ After build, the above section will become:
 
  ...
  # IFUNBUILT
- ## use warnings;
+ #use warnings;
  # END IFUNBUILT
 
  # IFBUILT
@@ -95,7 +96,7 @@ After build, the above section will become:
  }
  # END IFBUILT
  # IFUNBUILT
- ## use List::MoreUtils 'uniq';
+ # use List::MoreUtils 'uniq';
  # END IFBUILT
  ...
 
