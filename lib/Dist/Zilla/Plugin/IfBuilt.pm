@@ -84,7 +84,7 @@ After build, the above section will become:
 
  ...
  # IFUNBUILT
- #use warnings;
+ # use warnings;
  # END IFUNBUILT
 
  # IFBUILT
@@ -115,9 +115,10 @@ or this:
  # END IFBUILT
 
 in your modules and scripts. All the lines inside C<# IFBUILT> ... C<# END
-IFBUILT> must all be commented-out, and they will be uncommented in the built
-version. On the other hand, all the lines inside C<# IFUNBUILT> ... C<# END
-IFUNBUILT> will be commented with C<##> in the built version.
+IFBUILT> must all be commented-out, and they will be uncommented (one character
+C<#> removed from each line) in the built version. On the other hand, all the
+lines inside C<# IFUNBUILT> ... C<# END IFUNBUILT> will be commented (one
+character C<#> added to each line) in the built version.
 
 This plugin is useful when you want to have code that is only present in the
 built/unbuilt version. One use-case is when you want to replace a routine with
