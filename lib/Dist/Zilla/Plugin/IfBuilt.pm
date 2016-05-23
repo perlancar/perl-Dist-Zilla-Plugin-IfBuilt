@@ -45,7 +45,7 @@ sub munge_file {
         }
         $lines;
     };
-    if ($content =~ s{^(#\s*(IFBUILT|IFUNBUILT)\R)(.*?^)(#\s*END \2)}
+    if ($content =~ s{^([ \t]*#[ \t]*(IFBUILT|IFUNBUILT)\R)(.*?^)([ \t]*#[ \t]*END \2)}
                      {$1 . $code_comment_or_uncomment->($1, $3) . $4}egms) {
         $self->log_debug(["Processing #IFBUILT/#IFUNBUILT sections in %s", $file->name]);
         $file->content($content);
