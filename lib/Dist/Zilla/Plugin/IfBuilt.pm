@@ -46,7 +46,7 @@ sub munge_file {
         }
         $lines;
     };
-    if ($content =~ m{^(#[ \t]*NOIFBUILT$}m) {
+    if ($content =~ m{^#[ \t]*NOIFBUILT$}m) {
         $self->log_debug(["File contains #NOIFBUILT directive, skipping file"]);
         return;
     }
