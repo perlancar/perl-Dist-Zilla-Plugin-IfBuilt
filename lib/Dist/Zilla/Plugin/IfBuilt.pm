@@ -1,5 +1,6 @@
 package Dist::Zilla::Plugin::IfBuilt;
 
+# NOIFBUILT
 # DATE
 # VERSION
 
@@ -45,6 +46,10 @@ sub munge_file {
         }
         $lines;
     };
+    if ($content =~ m{^(#[ \t]*NOIFBUILT$}m) {
+        $self->log_debug(["File contains #NOIFBUILT directive, skipping file"]);
+        return;
+    }
     if ($content =~ s{^([ \t]*#[ \t]*(IFBUILT|IFUNBUILT)\R)(.*?^)([ \t]*#[ \t]*END \2)}
                      {$1 . $code_comment_or_uncomment->($1, $3) . $4}egms) {
         $self->log_debug(["Processing #IFBUILT/#IFUNBUILT sections in %s", $file->name]);
