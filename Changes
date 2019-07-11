@@ -1,4 +1,4 @@
-0.03    2016-05-23 (PERLANCAR)
+0.03    2016-05-23  Released-By: PERLANCAR
 
         - Introduce #NOIFBUILT to prevent #IFBUILT/#IFUNBUILT interpretation on
           a file (currently undocumented).
@@ -6,13 +6,13 @@
         - #IFBUILT/#IFUNBUILT can now be indented.
 
 
-0.02    2015-06-17 (PERLANCAR)
+0.02    2015-06-17  Released-By: PERLANCAR
 
 	- No functional changes.
 
 	- [doc] Fix wording/typo.
 
 
-0.01     2015-06-17 (PERLANCAR)
+0.01     2015-06-17  Released-By: PERLANCAR
 
          - First release.
